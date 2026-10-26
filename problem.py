@@ -1,42 +1,48 @@
+ 
+class Solution:
+    def closedIsland(self, grid):
+        m = len(grid)
+        n = len(grid[0])
+        count = 0
 
-class Solution {
-    public int closedIsland(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        int count = 0;
+        def dfs(i, j):
+            if i < 0 or j < 0 or i >= m or j >= n:
+                return False
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 0) {
-                    if (dfs(grid, i, j)) {
-                        count++;
-                    }
-                }
-            }
-        }
+            if grid[i][j] == 1:
+                return True
 
-        return count;
-    }
+            grid[i][j] = 1
 
-    private boolean dfs(int[][] grid, int i, int j) {
-        int m = grid.length;
-        int n = grid[0].length;
+            up = dfs(i - 1, j)
+            down = dfs(i + 1, j)
+            left = dfs(i, j - 1)
+            right = dfs(i, j + 1)
 
-        if (i < 0 || j < 0 || i >= m || j >= n) {
-            return false;
-        }
+            return up and down and left and right
 
-        if (grid[i][j] == 1) {
-            return true;
-        }
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 0:
+                    if dfs(i, j):
+                        count += 1
 
-        grid[i][j] = 1;
+        return count
 
-        boolean up = dfs(grid, i - 1, j);
-        boolean down = dfs(grid, i + 1, j);
-        boolean left = dfs(grid, i, j - 1);
-        boolean right = dfs(grid, i, j + 1);
 
-        return up && down && left && right;
-    }
-}
+
+if __name__ == "__main__":
+    grid = [
+        [1, 1, 1, 1, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0, 1, 1, 0],
+        [1, 0, 1, 0, 1, 1, 1, 0],
+        [1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 0]
+    ]
+
+    obj = Solution()
+    result = obj.closedIsland(grid)
+
+    print("Number of Closed Islands:", result)
+
+    
